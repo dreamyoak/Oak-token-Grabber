@@ -1,4 +1,5 @@
 # Oak-token-Grabber
+  ![fr](https://i.imgur.com/dEiUxyB.png)
 ## Oak Grabber:
 The best discord token logger!  
 
