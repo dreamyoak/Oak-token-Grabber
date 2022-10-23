@@ -22,7 +22,6 @@ from zipfile import ZipFile
 from threading import Thread
 from Crypto.Cipher import AES
 from PIL import ImageGrab
-from utils import chromium
 from urllib.request import Request, urlopen
 
 filename =  os.path.basename(sys.argv[0])
