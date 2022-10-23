@@ -272,7 +272,7 @@ Windows key: {windowskey}
 {ti}
 Cpu: {cpu}
 Gpu: {gpu}
-Refresh rate: `{rr}`
+Refresh rate: {rr}
 Model name: {mn}
 Build manufacturer: {bm}
 Resolution: {size}
