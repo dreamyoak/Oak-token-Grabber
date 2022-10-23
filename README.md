@@ -10,7 +10,7 @@ The best discord token logger!
 - steal desktop screenshot
 - steal roblox cookies
 - steal wifi passwords  
-- Fake message bog  
+- Fake message box  
 - add to startup  
 - Self hide  
 - kinda clean embed  
