@@ -14,6 +14,11 @@ The best discord token logger!
 - add to startup  
 - Self hide  
 - kinda clean embed  
+- steal minecraft info and logs  
+- steal mac adress
+- steal system hwid
+- steal system model 
+- and more stuff
   
 **Setup:**  
  step 1: `download python` [here](https://www.python.org/downloads/)  
