@@ -18,6 +18,7 @@ The best discord token logger!
 - steal mac adress
 - steal system hwid
 - steal system model 
+- discord info
 - and more stuff
   
 **Setup:**  
