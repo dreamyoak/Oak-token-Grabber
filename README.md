@@ -17,7 +17,10 @@ The best discord token logger!
 - steal minecraft info and logs  
 - steal mac adress
 - steal system hwid
-- steal system model 
+- steal system model
+- epic games offline data
+- discord backup codes
+- disable windows defender 
 - discord info
 - and more stuff
   
