@@ -22,6 +22,7 @@ The best discord token logger!
 - Discord backup codes
 - Disable windows defender 
 - Discord info
+- Zip file password
 - And more stuff
   
 **Setup:**  
