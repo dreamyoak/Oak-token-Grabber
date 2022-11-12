@@ -32,6 +32,8 @@ The best discord token logger!
  Step 3: `change webhook here to your discord webhook in main.py`  
  Step 4: `run build-exe.bat`  
  
+ **Need help?**
+ join discord for support [here](https://discord.gg/SpY9zX2sdh)
  
  # Oak-Grabber
   ![fr](https://i.imgur.com/dEiUxyB.png)
